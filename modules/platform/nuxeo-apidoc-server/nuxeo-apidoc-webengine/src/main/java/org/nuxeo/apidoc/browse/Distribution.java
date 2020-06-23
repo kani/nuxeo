@@ -90,6 +90,8 @@ import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
+import com.sun.jersey.api.NotFoundException;
+
 @Path("/distribution")
 // needed for 5.4.1
 @WebObject(type = Distribution.TYPE)
@@ -115,7 +117,7 @@ public class Distribution extends ModuleRoot {
 
     @Override
     public Object handleError(Throwable t) {
-        if (t instanceof WebResourceNotFoundException) {
+        if (t instanceof WebResourceNotFoundException || t instanceof NotFoundException) {
             return show404();
         } else {
             return super.handleError(t);
