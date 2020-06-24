@@ -58,6 +58,13 @@ public interface BundleInfo extends NuxeoArtifact {
     /** @since 11.1 */
     String RUNTIME_CONFIG_BUNDLE = "org.nuxeo.ecm.config";
 
+    /**
+     * Pseudo bundle, considered to be the root of all runtime bundles.
+     *
+     * @since 11.2
+     */
+    String RUNTIME_ROOT_PSEUDO_BUNDLE = "org.nuxeo.runtime.root";
+
     @JsonManagedReference("bundle")
     List<ComponentInfo> getComponents();
 

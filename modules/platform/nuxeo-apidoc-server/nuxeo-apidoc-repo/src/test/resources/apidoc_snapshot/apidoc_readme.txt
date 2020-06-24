@@ -9,6 +9,7 @@ This modules provides an API to browse the Nuxeo distribution tree:
           - Extension Points
           - Contributions
     - Operations
+    - Packages
 
 The Nuxeo Distribution can be:
 

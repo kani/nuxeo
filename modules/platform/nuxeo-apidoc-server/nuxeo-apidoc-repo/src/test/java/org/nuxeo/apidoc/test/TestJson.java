@@ -372,7 +372,11 @@ public class TestJson extends AbstractApidocTest {
 
         // check extension points
         assertNotNull(smcomp.getExtensionPoints());
-        assertEquals(1, smcomp.getExtensionPoints().size());
+        if (legacy) {
+            assertEquals(1, smcomp.getExtensionPoints().size());
+        } else {
+            assertEquals(2, smcomp.getExtensionPoints().size());
+        }
         ExtensionPointInfo xp = smcomp.getExtensionPoints().get(0);
         assertEquals(ExtensionPointInfo.TYPE_NAME, xp.getArtifactType());
         assertEquals("org.nuxeo.apidoc.snapshot.SnapshotManagerComponent", xp.getComponentId());
@@ -457,7 +461,7 @@ public class TestJson extends AbstractApidocTest {
         if (legacy) {
             assertEquals(0, smcomp.getExtensions().size());
         } else {
-            assertEquals(4, smcomp.getExtensions().size());
+            assertEquals(5, smcomp.getExtensions().size());
         }
 
         // check another component with contributions

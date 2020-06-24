@@ -53,6 +53,19 @@
     <object class="org.nuxeo.apidoc.plugin.PluginDescriptor" />
   </extension-point>
 
+  <extension-point name="exports">
+    <documentation>
+      Extension point for pluggable export generation.
+    </documentation>
+    <object class="org.nuxeo.apidoc.export.api.ExportGenerator" />
+  </extension-point>
+
+  <extension target="org.nuxeo.apidoc.snapshot.SnapshotManagerComponent" point="exports">
+    <!-- TODO -->
+    <!-- <graphGenerator name="basic" class="org.nuxeo.apidoc.export.graphs.plugins.BasicGraphGeneratorImpl" /> -->
+    <!-- <graphGenerator name="jgrapht" class="org.nuxeo.apidoc.export.graphs.plugins.BasicGraphGeneratorImpl" /> -->
+  </extension>
+
   <extension target="org.nuxeo.runtime.ConfigurationService" point="configuration">
     <documentation>
       URL base for Javadoc Links.

@@ -43,11 +43,14 @@ import org.apache.logging.log4j.Logger;
 import org.nuxeo.apidoc.api.BundleGroup;
 import org.nuxeo.apidoc.api.BundleInfo;
 import org.nuxeo.apidoc.api.ComponentInfo;
+import org.nuxeo.apidoc.api.Descriptor;
 import org.nuxeo.apidoc.api.ExtensionInfo;
 import org.nuxeo.apidoc.api.ExtensionPointInfo;
 import org.nuxeo.apidoc.api.NuxeoArtifact;
 import org.nuxeo.apidoc.api.OperationInfo;
 import org.nuxeo.apidoc.api.ServiceInfo;
+import org.nuxeo.apidoc.export.api.ExportGenerator;
+import org.nuxeo.apidoc.export.api.ExportGeneratorDescriptor;
 import org.nuxeo.apidoc.introspection.RuntimeSnapshot;
 import org.nuxeo.apidoc.plugin.Plugin;
 import org.nuxeo.apidoc.plugin.PluginDescriptor;
@@ -93,6 +96,13 @@ public class SnapshotManagerComponent extends DefaultComponent implements Snapsh
      */
     public static final String XP_PLUGINS = "plugins";
 
+    /**
+     * Extension point for exports.
+     *
+     * @since 11.2
+     */
+    public static final String XP_EXPORTS = "exports";
+
     protected volatile DistributionSnapshot runtimeSnapshot;
 
     protected static final String IMPORT_TMP = "tmpImport";
@@ -100,6 +110,8 @@ public class SnapshotManagerComponent extends DefaultComponent implements Snapsh
     protected final SnapshotPersister persister = new SnapshotPersister();
 
     protected final Map<String, Plugin<?>> plugins = new LinkedHashMap<>();
+
+    protected final Map<String, ExportGenerator> exports = new LinkedHashMap<>();
 
     @Override
     public DistributionSnapshot getRuntimeSnapshot() {
@@ -408,17 +420,23 @@ public class SnapshotManagerComponent extends DefaultComponent implements Snapsh
     @Override
     public void start(ComponentContext context) {
         super.start(context);
-        plugins.clear();
-        List<PluginDescriptor> descriptors = getDescriptors(XP_PLUGINS);
-        for (PluginDescriptor descriptor : descriptors) {
+        fillRegistry(XP_PLUGINS, plugins, PluginDescriptor.class);
+        fillRegistry(XP_EXPORTS, exports, ExportGeneratorDescriptor.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> void fillRegistry(String xp, Map<String, T> registry, Class<?> descriptorClass) {
+        registry.clear();
+        List<Descriptor> descriptors = getDescriptors(xp);
+        for (Descriptor descriptor : descriptors) {
             try {
                 Class<?> clazz = Class.forName(descriptor.getKlass());
-                Constructor<?> constructor = clazz.getConstructor(PluginDescriptor.class);
-                Plugin<?> plugin = (Plugin<?>) constructor.newInstance(descriptor);
-                plugins.put(descriptor.getId(), plugin);
+                Constructor<?> constructor = clazz.getConstructor(descriptorClass);
+                T instance = (T) constructor.newInstance(descriptor);
+                registry.put(descriptor.getId(), instance);
             } catch (ReflectiveOperationException e) {
                 String msg = String.format(
-                        "Failed to register plugin with id '%s' on '%s': error initializing class '%s' (%s).",
+                        "Failed to register contribution with id '%s' on '%s': error initializing class '%s' (%s).",
                         descriptor.getId(), name, descriptor.getKlass(), e.toString());
                 log.error(msg, e);
                 Framework.getRuntime().getMessageHandler().addError(msg);

@@ -1,1 +1,2 @@
+NXExtensionPoint: org.nuxeo.apidoc.snapshot.SnapshotManagerComponent--exports *** /apidoc/org.nuxeo.apidoc.repo/org.nuxeo.apidoc.snapshot.SnapshotManagerComponent/ExtensionPoints/org.nuxeo.apidoc.snapshot.SnapshotManagerComponent--exports
 NXExtensionPoint: org.nuxeo.apidoc.snapshot.SnapshotManagerComponent--plugins *** /apidoc/org.nuxeo.apidoc.repo/org.nuxeo.apidoc.snapshot.SnapshotManagerComponent/ExtensionPoints/org.nuxeo.apidoc.snapshot.SnapshotManagerComponent--plugins

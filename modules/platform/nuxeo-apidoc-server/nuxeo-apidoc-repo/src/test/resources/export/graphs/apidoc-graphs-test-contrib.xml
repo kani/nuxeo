@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.apidoc.test.graphs" version="1.0">
+
+  <!-- override to lower timeout on force layouts -->
+  <require>org.nuxeo.apidoc.snapshot.SnapshotManagerComponent</require>
+
+  <extension target="org.nuxeo.apidoc.snapshot.SnapshotManagerComponent" point="graphs">
+    <graphGenerator name="gephi" class="org.nuxeo.apidoc.introspection.graph.GephiGraphGeneratorImpl">
+      <properties>
+        <property name="layout.timeout">2</property>
+      </properties>
+    </graphGenerator>
+  </extension>
+
+</component>
