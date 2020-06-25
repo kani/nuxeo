@@ -687,7 +687,7 @@
       "version": "11.1-SNAPSHOT"
     }
   ],
-  "creationDate": 1591177629896,
+  "creationDate": 1593070862969,
   "key": "Nuxeo-unknown",
   "name": "Nuxeo",
   "operations": [
@@ -757,7 +757,7 @@
   ],
   "packages": [
     {
-      "@type": "PackageInfoImpl",
+      "@type": "NXPackage",
       "bundles": [
         "org.nuxeo.apidoc.core",
         "org.nuxeo.apidoc.repo"
